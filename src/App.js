@@ -8,7 +8,10 @@ const clientPass = "0c36bbe2f2194b6e81580f1ba520aa01";
 function MainPage() {
   // Fetch/input variables
   const [artistSearch, setartistSearch] = useState("");
-  const [tracks, settracks] = useState([]);
+  // Set default to US to prevent errors with no drop down selection
+  const [inputCountry, setinputCountry] = useState("US");
+  const [tracksNZ, settracksNZ] = useState([]);
+  const [tracksSELECTED, settracksSELECTED] = useState([]);
   const [artistName, setname] = useState("");
 
   // Fetch Spotify API to get access token / artist data / artist tracks
@@ -32,18 +35,33 @@ function MainPage() {
       const ID = current.id;
       console.log("Artist: " + artistName);
 
-      // Get artist tracks from ID and add to array
-      const trackArray = await fetchArtistTracks(accessToken, ID);
-      settracks(trackArray.tracks);
+      // Get artist tracks from ID and add to array (NZ)
+      const trackArray = await fetchArtistTracksNZ(accessToken, ID);
+      settracksNZ(trackArray.tracks);
+
+      // Get artist tracks from selected country
+      const trackArraySELECTED = await fetchArtistTracksSELECTED(
+        accessToken,
+        ID,
+        inputCountry
+      );
+      settracksSELECTED(trackArraySELECTED.tracks);
     } catch (error) {
       console.error("ERROR:", error);
     }
   }
-  // Sets user input
+  // Sets artist input
   function setInput(event) {
     setartistSearch(event.target.value);
     console.log("Search SET");
   }
+
+  // Sets country input
+  function setCountry(event) {
+    setinputCountry(event.target.value);
+    console.log("Country SET" + inputCountry);
+  }
+
   // Get spotify API Access Token
   async function fetchAccessToken() {
     const authorisationURL = "https://accounts.spotify.com/api/token";
@@ -60,10 +78,23 @@ function MainPage() {
     return authResponse.access_token;
   }
   // Iterate through tracks array to list song names/albums
-  function trackList() {
+  function trackListNZ() {
     return (
       <ul>
-        {tracks.map((track, i) => (
+        {tracksNZ.map((track, i) => (
+          <li key={i}>
+            <strong>{i + 1} </strong> &nbsp; {track.name} &nbsp;
+            <strong>Album:</strong> &nbsp; {track.album.name}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  function trackListSELECTED() {
+    return (
+      <ul>
+        {tracksSELECTED.map((track, i) => (
           <li key={i}>
             <strong>{i + 1} </strong> &nbsp; {track.name} &nbsp;
             <strong>Album:</strong> &nbsp; {track.album.name}
@@ -86,13 +117,26 @@ function MainPage() {
           // Sets artistSearch at any point of a user's search
           onChange={setInput}
         />
+        <label id="dropDownLabel"> Select a Country: </label>
+        <select id="countryDropdown" onChange={setCountry}>
+          <option value="US">USA</option>
+          <option value="AU">Australia</option>
+          <option value="ZA"> South Africa</option>
+          <option value="CN">China</option>
+          <option value="JP">Japan</option>
+        </select>
         <button type="submit" id="submitBut">
           Search
         </button>
       </form>
       <div>
         <h3>{artistName}</h3>
-        {trackList()}
+        <h4 id="nzTitle">NZ</h4>
+        {trackListNZ()}
+      </div>
+      <div>
+        <h4 id="countryTitle">{inputCountry}</h4>
+        {trackListSELECTED()}
       </div>
     </div>
   );
@@ -112,8 +156,19 @@ async function fetchArtistData(token, userInput) {
 }
 
 // Get artist tracks using token and artist ID
-async function fetchArtistTracks(token, artID) {
-  const artistTrackEndpoint = `https://api.spotify.com/v1/artists/${artID}/top-tracks?market=US`;
+async function fetchArtistTracksNZ(token, artID) {
+  const artistTrackEndpoint = `https://api.spotify.com/v1/artists/${artID}/top-tracks?market=NZ`;
+  const tracksRequest = await fetch(artistTrackEndpoint, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return tracksRequest.json();
+}
+
+async function fetchArtistTracksSELECTED(token, artID, country) {
+  const artistTrackEndpoint = `https://api.spotify.com/v1/artists/${artID}/top-tracks?market=${country}`;
   const tracksRequest = await fetch(artistTrackEndpoint, {
     method: "GET",
     headers: {
