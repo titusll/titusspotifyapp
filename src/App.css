@@ -6,45 +6,57 @@ body, html {
 
 .App {
   text-align: center;
-  background-color: ghostwhite;
+  background-color:whitesmoke;
   height: 100%;
   width: 100%;
 }
 
 #artistInput {
   color: black;
-  font-size: 30px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 #streamHeader {
   color: black;
   font-size: 40px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 #artistInput::placeholder {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   color: gainsboro;
 }
 
 #artistLabel {
   color: black;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 30px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 25px;
   margin-right: 20px;
 }
 
 #submitBut {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   color: black;
-  font-size: 30px;
+  font-size: 25px;
   margin-left: 20px;
 }
 
 li {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   color: black;
   display: flex;
   align-items: center;
+}
+
+#dropDownLabel {
+  color: black;
+  font-size: 25px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  margin-left: 10px;
+}
+
+#countryDropdown {
+  width:80px;
+  height:20px;
 }

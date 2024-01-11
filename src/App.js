@@ -73,6 +73,9 @@ function MainPage() {
   return (
     <div className="App">
       <h1 id="streamHeader">Stream Search</h1>
+      <p id="subTitle">
+        Search for an artist on Spotify and compare their top tracks to NZ
+      </p>
       <form onSubmit={searchSpotify}>
         <label id="artistLabel">Enter Artist name:</label>
         <input
@@ -85,16 +88,18 @@ function MainPage() {
         <select id="countryDropdown" onChange={setCountry}>
           <option value="US">USA</option>
           <option value="AU">Australia</option>
-          <option value="ZA"> South Africa</option>
           <option value="CN">China</option>
           <option value="JP">Japan</option>
+          <option value="SA"> Saudi Arabia</option>
+          <option value="ZA"> South Africa</option>
+          <option value="AE">United Arab Emirates</option>
         </select>
         <button type="submit" id="submitBut">
           Search
         </button>
       </form>
       <div>
-        <h3>{artistName}</h3>
+        <h2>{artistName}</h2>
         <h4 id="nzTitle">NZ</h4>
         {trackList(tracksNZ)}
       </div>
