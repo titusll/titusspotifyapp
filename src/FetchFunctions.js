@@ -13,6 +13,13 @@ export async function fetchAccessToken(spotifyID, spotifyPass) {
   });
 
   const authResponse = await authFetch.json();
+
+  // Check no errors in getting token
+  if (authResponse.error) {
+    console.log(
+      `Error retrieving access token, message:  + ${authResponse.error}`
+    );
+  }
   return authResponse.access_token;
 }
 
@@ -26,7 +33,10 @@ export async function fetchArtistData(token, userInput) {
       Authorization: `Bearer ${token}`,
     },
   });
-  return artistRequest.json();
+
+  const artistResponse = await artistRequest.json();
+
+  return artistResponse;
 }
 
 // Get artist tracks using token and artist ID (NZ market)

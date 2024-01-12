@@ -14,17 +14,27 @@ const clientPass = "0c36bbe2f2194b6e81580f1ba520aa01";
 
 function MainPage() {
   // Fetch/input variables
-  const [artistSearch, setartistSearch] = useState("");
+  const [artistSearch, setartistSearch] = useState(null);
   // Set default to US to prevent errors with no drop down selection
   const [inputCountry, setinputCountry] = useState("US");
   const [tracksNZ, settracksNZ] = useState([]);
   const [tracksSELECTED, settracksSELECTED] = useState([]);
-  const [artistName, setname] = useState("");
+  const [artistName, setname] = useState();
+  const [error, seterror] = useState();
 
   // Fetch Spotify API to get artist data
   async function searchSpotify(event) {
     event.preventDefault();
     console.log("INSIDE METHOD");
+
+    // Check for null input
+    if (artistSearch === null) {
+      seterror("ERROR: No artist searched, please try again.");
+      return;
+    }
+
+    // Clear error message upon search
+    seterror(null);
 
     try {
       // Get access token
@@ -37,6 +47,8 @@ function MainPage() {
 
       // Get artist ID
       const current = artistData.artists.items[0];
+      console.log(current.name);
+
       const name = current.name;
       setname(name);
       const ID = current.id;
@@ -53,21 +65,24 @@ function MainPage() {
         inputCountry
       );
       settracksSELECTED(trackArraySELECTED.tracks);
-    } catch (error) {
-      console.error("ERROR:", error);
+    } catch (errors) {
+      console.error("ERROR1:", errors);
+      // Set error, likely no artist
+      seterror("ERROR: No artist found");
     }
   }
-  // Set artist input
-  function setInput(event) {
+
+  // Set artist input (practicing concise functions)
+  const setInput = (event) => {
     setartistSearch(event.target.value);
     console.log("Search SET");
-  }
+  };
 
   // Set country input
-  function setCountry(event) {
+  const setCountry = (event) => {
     setinputCountry(event.target.value);
     console.log("Country SET" + inputCountry);
-  }
+  };
 
   // UI Design
   return (
@@ -98,6 +113,7 @@ function MainPage() {
           Search
         </button>
       </form>
+      <div id="errorDiv">{error ? <p>{error}</p> : null}</div>
       <div>
         <h2>{artistName}</h2>
         <h4 id="nzTitle">NZ</h4>
