@@ -33,8 +33,11 @@ function MainPage() {
       return;
     }
 
-    // Clear error message upon search
+    // Clear previous results/errors before new results
     seterror(null);
+    settracksNZ([]);
+    settracksSELECTED([]);
+    setname();
 
     try {
       // Get access token
